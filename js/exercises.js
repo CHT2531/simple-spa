@@ -20,6 +20,56 @@ const contentDiv = document.querySelector("#content");
 const titleElem = document.querySelector("#title");
 const yearElem = document.querySelector("#year");
 const durationElem = document.querySelector("#duration");
+const backBtn = document.querySelector("#backBtn");
+
+function showFilm(evnt){
+	let id = evnt.target.getAttribute("data-id")-1;
+	console.log(films[id].year)
+	titleElem.textContent=films[id].title;
+	yearElem.textContent=films[id].year;
+	durationElem.textContent=films[id].duration;
+	contentDiv.classList.remove("hide");
+	navList.classList.add("hide");
+	history.pushState(film,null, film.id);
+}
+films.forEach(function(film){
+	let liElem = document.createElement("li");
+	let link = document.createElement("a");
+	link.setAttribute("data-id",film.id);
+	let txt = document.createTextNode(film.title);
+	link.appendChild(txt);
+	liElem.appendChild(link);
+	navList.appendChild(liElem);
+	link.addEventListener("click",showFilm,false);
+})
+
+function goBack(){
+	navList.classList.remove("hide");
+	contentDiv.classList.add("hide");
+	history.pushState(null,null,"list");
+}
+
+function doHistory(evnt) {
+	if(evnt.state){
+		//show a film's details
+		let film=evnt.state
+		titleElem.textContent=film.title;
+		yearElem.textContent=`Year of release:${film.year}`;
+		durationElem.textContent=`Duration:${film.duration}mins`;
+		navList.classList.add("hide");
+		contentDiv.classList.remove("hide");
+	}else{
+		//show the list of all films 
+		contentDiv.classList.add("hide");
+		navList.classList.remove("hide");
+	}
+	
+}
+
+backBtn.addEventListener("click",goBack,false);
+
+//this event is triggered when the back button is hit
+window.addEventListener('popstate', doHistory,false);
 
 //Q1. Using a forEach loop output a list of the films in the HTML page (use the <ul> with an id of 'nav')
 
