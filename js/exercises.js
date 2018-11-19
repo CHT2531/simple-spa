@@ -24,13 +24,12 @@ const backBtn = document.querySelector("#backBtn");
 
 function showFilm(evnt){
 	let id = evnt.target.getAttribute("data-id")-1;
-	console.log(films[id].year)
 	titleElem.textContent=films[id].title;
 	yearElem.textContent=films[id].year;
 	durationElem.textContent=films[id].duration;
 	contentDiv.classList.remove("hide");
 	navList.classList.add("hide");
-	history.pushState(film,null, film.id);
+	history.pushState(films[id],null, films[id].id);
 }
 films.forEach(function(film){
 	let liElem = document.createElement("li");
@@ -54,8 +53,8 @@ function doHistory(evnt) {
 		//show a film's details
 		let film=evnt.state
 		titleElem.textContent=film.title;
-		yearElem.textContent=`Year of release:${film.year}`;
-		durationElem.textContent=`Duration:${film.duration}mins`;
+		yearElem.textContent=film.year;
+		durationElem.textContent=film.duration;
 		navList.classList.add("hide");
 		contentDiv.classList.remove("hide");
 	}else{
@@ -70,6 +69,8 @@ backBtn.addEventListener("click",goBack,false);
 
 //this event is triggered when the back button is hit
 window.addEventListener('popstate', doHistory,false);
+
+goBack();
 
 //Q1. Using a forEach loop output a list of the films in the HTML page (use the <ul> with an id of 'nav')
 
