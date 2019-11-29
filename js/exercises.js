@@ -1,19 +1,4 @@
-//creating an array of film objects, really these would come from Ajax
-class Film
-{
-	constructor(id,title, year,duration){
-		this.id = id;
-		this.title = title;
-		this.year = year;
-		this.duration = duration;
-	}
-}
-let films=[]
-films.push(new Film(1,"Get Out","2017",117));
-films.push(new Film(2,"Jaws","1975",124));
-films.push(new Film(3,"Winter's Bone","2010",100));
-films.push(new Film(4,"The Incredibles","2004",115));
-
+let films;
 //get hold of elements from the HTML document
 const navList =document.querySelector("#nav");
 const contentDiv = document.querySelector("#content");
@@ -21,6 +6,35 @@ const titleElem = document.querySelector("#title");
 const yearElem = document.querySelector("#year");
 const durationElem = document.querySelector("#duration");
 const backBtn = document.querySelector("#backBtn");
+
+
+function doAjax(url,callback)
+{
+	fetch(url).then(function(response) {
+		return response.json();
+	}).then(function(json) {
+		films=json;
+		callback(json)
+	});
+} //end of doAjax
+
+
+function buildFilmList(){
+	films.forEach(function(film){
+		let liElem = document.createElement("li");
+		let link = document.createElement("a");
+		link.setAttribute("data-id",film.id);
+		let txt = document.createTextNode(film.title);
+		link.appendChild(txt);
+		liElem.appendChild(link);
+		navList.appendChild(liElem);
+		link.addEventListener("click",showFilm,false);
+	})
+}
+
+doAjax("./data/films.json",buildFilmList);
+
+
 
 function showFilm(evnt){
 	let id = evnt.target.getAttribute("data-id")-1;
@@ -31,16 +45,7 @@ function showFilm(evnt){
 	navList.classList.add("hide");
 	history.pushState(films[id],null, films[id].id);
 }
-films.forEach(function(film){
-	let liElem = document.createElement("li");
-	let link = document.createElement("a");
-	link.setAttribute("data-id",film.id);
-	let txt = document.createTextNode(film.title);
-	link.appendChild(txt);
-	liElem.appendChild(link);
-	navList.appendChild(liElem);
-	link.addEventListener("click",showFilm,false);
-})
+
 
 function goBack(){
 	navList.classList.remove("hide");
@@ -58,11 +63,11 @@ function doHistory(evnt) {
 		navList.classList.add("hide");
 		contentDiv.classList.remove("hide");
 	}else{
-		//show the list of all films 
+		//show the list of all films
 		contentDiv.classList.add("hide");
 		navList.classList.remove("hide");
 	}
-	
+
 }
 
 backBtn.addEventListener("click",goBack,false);
