@@ -14,13 +14,13 @@ function doAjax(url,callback)
 	fetch(url).then(function(response) {
 		return response.json();
 	}).then(function(json) {
-		films=json;
 		callback(json)
 	});
 }
 
-function showFilmList()
+function showFilmList(data)
 {
+	films=data;
 	const filmsFragment = document.createDocumentFragment(); //create a fragment
 	films.forEach(function(film){
 	    const newLi = document.createElement("li");
