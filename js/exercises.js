@@ -14,59 +14,18 @@ function doAjax(url,callback)
 	fetch(url).then(function(response) {
 		return response.json();
 	}).then(function(json) {
-		films=json;
 		callback(json)
 	});
 }
 
-function showFilmList()
+function showFilmList(data)
 {
-	const filmsFragment = document.createDocumentFragment(); //create a fragment
+	films=data
 	films.forEach(function(film){
-	    const newLi = document.createElement("li");
-	    newLi.textContent = film.title;
-			newLi.addEventListener("click",getFilmDetailsHandler(film),false);
-	    filmsFragment.appendChild(newLi);
+	    console.log(film.title);
 	});
-	filmList.appendChild(filmsFragment);
 }
 
-function getFilmDetailsHandler(film)
-{
-	return function showFilmDetails(){
-		titleElem.textContent=film.title;
-		yearElem.textContent=film.year;
-		durationElem.textContent=film.duration;
-		filmDetails.classList.remove("hide");
-		filmList.classList.add("hide");
-		history.pushState(film,null,film.id);
-	}
-}
-
-
-
-function goBack(){
-	filmList.classList.remove("hide");
-	filmDetails.classList.add("hide");
-	history.pushState(null,null,"list");
-}
-
-function doHistory(evnt) {
-	if(evnt.state){
-		//show a film's details
-		let film=evnt.state
-		titleElem.textContent=film.title;
-		yearElem.textContent=film.year;
-		durationElem.textContent=film.duration;
-		filmList.classList.add("hide");
-		filmDetails.classList.remove("hide");
-	}else{
-		//show the list of all films
-		filmDetails.classList.add("hide");
-		filmList.classList.remove("hide");
-	}
-
-}
 
 function init(){
 	filmList =document.querySelector("#film-list");
@@ -75,11 +34,6 @@ function init(){
 	yearElem = document.querySelector("#year");
 	durationElem = document.querySelector("#duration");
 	backBtn = document.querySelector("#backBtn");
-	backBtn.addEventListener("click",goBack,false);
-	filmDetails.classList.add("hide");
-	//this event is triggered when the browser back button is hit
-	window.addEventListener('popstate', doHistory,false);
-	//calls doAjax, showFilmList will be run once the data has loaded
 	doAjax("./data/films.json",showFilmList);
 }
 
