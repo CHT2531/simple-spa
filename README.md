@@ -20,6 +20,8 @@ This repository contains a simple SPA. There is a single HTML page, but by some 
 Now try the following:
 * Comment out the CSS in *index.html*. Re-run the example, see how the app really is just a single page.
 * Like with the previous example, can you make some changes to the JSON file to test your understanding.
+	* Add an additional country.
+	* For each country, add an additional continent property.
 
 ## The History API
 One problem with SPAs is that they 'break' the web. The user thinks they have moved to a different page when they haven't, as a result, the back/forward buttons in the browser no longer work like the user expects them to. One way around this problem is to use the History API - using JavaScript we can artificially create browser history entries e.g.
