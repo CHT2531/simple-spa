@@ -30,16 +30,16 @@ function createHandler(country)
 
 function populateList(countries)
 {
-	const countriesFragment = document.createDocumentFragment();
+	const countriesList=document.querySelector("#countries-list");
 	countries.forEach(function(country){
 		const newLi=document.createElement("li");
 		newLi.textContent=country.name;
 		newLi.addEventListener("click", createHandler(country), false)
-		countriesFragment.appendChild(newLi);
+		countriesList.appendChild(newLi);
 	})
-	const countriesList=document.querySelector("#countries-list");
-	countriesList.appendChild(countriesFragment);
 }
+	
+	
 
 function goBack(){
 	listDiv.classList.remove("hide");
